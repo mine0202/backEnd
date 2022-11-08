@@ -3,6 +3,8 @@ package com.example.simpledms.service;
 import com.example.simpledms.model.Dept;
 import com.example.simpledms.repository.DeptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +17,13 @@ public class DeptService {
     @Autowired
     DeptRepository deptRepository;  // JPA CRUD 함수가있음
 
-    //    전체 조회 함수
-    public List<Dept> findAll() {
+    //    전체 조회 함수를 변경 findAll(Pageable pageable)
+    public Page<Dept> findAll(Pageable pageable) {
 //         JPA 가 findAll 등을 자동으로 만들어줌
-        List<Dept> list = deptRepository.findAll();
-        return list;
+        Page<Dept> page = deptRepository.findAll(pageable);
+        return page;
     }
+
 
     public void removeAll() {
         deptRepository.deleteAll();
@@ -58,10 +61,10 @@ public class DeptService {
     }
 
 
-    //    조회 함수
-    public List<Dept> findAllByDnameContaining(String dname) {
-        List<Dept> list = deptRepository.findAllByDnameContaining(dname);
-        return list;
+    //    조회 함수 ( 페이징 처리 )
+    public Page<Dept> findAllByDnameContaining(String dname, Pageable pageable) {
+        Page<Dept> page = deptRepository.findAllByDnameContaining(dname, pageable);
+        return page;
     }
 
 }

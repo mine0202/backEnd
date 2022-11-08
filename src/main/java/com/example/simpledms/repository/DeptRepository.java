@@ -2,10 +2,10 @@ package com.example.simpledms.repository;
 
 
 import com.example.simpledms.model.Dept;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 
 // JPA CRUD 를 위한 인터페이스 (Dao 와 같음)
@@ -16,8 +16,8 @@ import java.util.List;
 public interface DeptRepository extends JpaRepository<Dept, Integer> {
 
 //    like 검색은 기본제공하지 않으므로 새로 만듬
-//    부서명으로 조회하는 like 검색
+//    부서명으로 조회하는 like 검색 , 페이징 처리 추가
 //    query method 방식
-    List<Dept> findAllByDnameContaining(String dname);
+    Page<Dept> findAllByDnameContaining(String dname, Pageable pageable);
 
 }

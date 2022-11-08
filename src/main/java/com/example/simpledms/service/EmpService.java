@@ -3,6 +3,8 @@ package com.example.simpledms.service;
 import com.example.simpledms.model.Emp;
 import com.example.simpledms.repository.EmpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +16,6 @@ public class EmpService {
 
     @Autowired
     EmpRepository empRepository;  // JPA CRUD 함수가있음
-
-//    전체 조회 함수
-    public List<Emp> findAll(){
-//         JPA 가 findAll 등을 자동으로 만들어줌
-        List<Emp> list = empRepository.findAll();
-        return list;
-    }
 
     public void removeAll(){
         empRepository.deleteAll();
@@ -50,9 +45,9 @@ public class EmpService {
     }
 
     //    조회 함수
-    public List<Emp> findAllByEnameContaining(String ename) {
-        List<Emp> list = empRepository.findAllByEnameContaining(ename);
-        return list;
+    public Page<Emp> findAllByEnameContaining(String ename, Pageable pageable) {
+        Page<Emp> page = empRepository.findAllByEnameContaining(ename, pageable);
+        return page;
     }
 
 

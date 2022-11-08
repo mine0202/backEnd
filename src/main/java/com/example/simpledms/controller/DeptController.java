@@ -4,13 +4,14 @@ import com.example.simpledms.model.Dept;
 import com.example.simpledms.service.DeptService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 //@CrossOrigin(origins ="http://localhost")
@@ -28,31 +29,44 @@ public class DeptController {
 
 //    프론트엔드에서 url(쿼리스트링)  ?  매개변수 전송방식 사용했으면 백엔드에서는 @RequestParam 으로 받음
 //    프론트엔드 url (파라메타방식)  /{ }  매개변수 전송방식 사용했으면 백엔드에서는 @PathVariable 으로 받음
-    @GetMapping("/dept")
-//    @RequestParam 은 dname 이 꼭 들어와야하므로 @RequestParam(required = false) 변경해줌
-    public ResponseEntity<Object> getDeptAll(@RequestParam(required = false) String dname){
-        try{
-            List<Dept> list = Collections.emptyList();  // null 대신 만들어져 있는 초기화용 빈 리스트를 사용
-            if( dname == null){
-        //            1. dname 이 null 일 경우 전체검색
-                list = deptService.findAll();
-            }
-        //            2. dname 이 값이 있을 경우 부서명검색
-            else{
-                list = deptService.findAllByDnameContaining(dname);
-            }
+@GetMapping("/dept")
+public ResponseEntity<Object> getDeptAll(@RequestParam(required = false) String dname,
+                                         @RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "3") int size
+) {
 
-            if( list.isEmpty()== false){
-                return new ResponseEntity<>(list,HttpStatus.OK);
-            }
-            else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        }catch (Exception e){
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    try {
+//            Pageable 객체 정의 ( page, size 값 설정 )
+        Pageable pageable = PageRequest.of(page, size);
+
+//            Page 객체 정의
+        Page<Dept> deptPage= deptService.findAllByDnameContaining(dname, pageable);
+
+        //                페이징 처리되는 findAllByDnameContaining()
+
+
+
+//            맵 자료구조에 넣어서 전송
+        Map<String, Object> response = new HashMap<>();
+        response.put("dept", deptPage.getContent());
+        response.put("currentPage", deptPage.getNumber());
+        response.put("totalItems", deptPage.getTotalElements());
+        response.put("totalPages", deptPage.getTotalPages());
+
+        if (deptPage.isEmpty() == false) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+
+    } catch (Exception e) {
+        log.debug(e.getMessage());
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+}
+
+
+
 
     @DeleteMapping("/dept/all")
     public ResponseEntity<Object> removeAll(){

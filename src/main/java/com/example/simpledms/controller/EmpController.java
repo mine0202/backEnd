@@ -4,13 +4,14 @@ import com.example.simpledms.model.Emp;
 import com.example.simpledms.service.EmpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 //@CrossOrigin(origins ="http://localhost")
@@ -27,18 +28,26 @@ public class EmpController {
     EmpService empService;
 
     @GetMapping("/emp")
-    public ResponseEntity<Object> getEmpAll(@RequestParam(required = false) String ename){
+    public ResponseEntity<Object> getEmpAll(@RequestParam(required = false) String ename,
+                                            @RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "3") int size
+                                            ){
 
         try{
-            List<Emp> list = Collections.emptyList();
-            if(ename == null){
-                list = empService.findAll();
-            }
-            else{
-                list = empService.findAllByEnameContaining(ename);
-            }
-            if( list.isEmpty()== false){
-                return new ResponseEntity<>(list,HttpStatus.OK);
+            Pageable pageable = PageRequest.of(page,size);
+
+
+            Page<Emp> empPage= empService.findAllByEnameContaining(ename, pageable);
+
+            Map<String , Object> response = new HashMap<>();
+            response.put("emp", empPage.getContent());
+            response.put("currentPage", empPage.getNumber());
+            response.put("totalItems", empPage.getTotalElements());
+            response.put("totalPages", empPage.getTotalPages());
+
+                
+            if( empPage.isEmpty()== false){
+                return new ResponseEntity<>(response,HttpStatus.OK);
             }
             else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);

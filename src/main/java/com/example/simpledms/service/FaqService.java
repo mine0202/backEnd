@@ -3,6 +3,8 @@ package com.example.simpledms.service;
 import com.example.simpledms.model.Faq;
 import com.example.simpledms.repository.FaqRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +18,11 @@ public class FaqService {
     FaqRepository faqRepository;
 
     //    전체 조회 함수
-    public List<Faq> findAll() {
-//         JPA 가 findAll 등을 자동으로 만들어줌
-        List<Faq> list = faqRepository.findAll();
-        return list;
-    }
+//    public List<Faq> findAll() {
+////         JPA 가 findAll 등을 자동으로 만들어줌
+//        List<Faq> list = faqRepository.findAll();
+//        return list;
+//    }
 
     public void removeAll() {
         faqRepository.deleteAll();
@@ -50,9 +52,9 @@ public class FaqService {
 
 
     //    조회 함수
-    public List<Faq> findAllByTitleContaining(String title) {
-        List<Faq> list = faqRepository.findAllByTitleContaining(title);
-        return list;
+    public Page<Faq> findAllByTitleContaining(String title, Pageable pageable) {
+        Page<Faq> page = faqRepository.findAllByTitleContaining(title,pageable);
+        return page;
     }
 
 }
