@@ -64,7 +64,7 @@ public class CustomerController {
 
 //    insert 는 PostMapping
     @PostMapping("/customer")
-    public ResponseEntity<Object> createDept(@RequestBody Customer customer){
+    public ResponseEntity<Object> createCustomer(@RequestBody Customer customer){
         try{
             Customer customer1 = customerService.save(customer);
             return new ResponseEntity<>(customer1, HttpStatus.OK);
@@ -75,12 +75,12 @@ public class CustomerController {
     }
 
     @GetMapping("/customer/{cid}")
-    public ResponseEntity<Object> getDeptId(@PathVariable int cid){
+    public ResponseEntity<Object> getCustomerId(@PathVariable int cid){
         try{
-            Optional<Customer> optionalDept = customerService.findById(cid);
-            if(optionalDept.isPresent()){
+            Optional<Customer> optionalCustomer = customerService.findById(cid);
+            if(optionalCustomer.isPresent()){
 //                optional 안에 데이터를 .get() 으로 꺼내서 뷰로 보냄
-                return new ResponseEntity<>(optionalDept.get(), HttpStatus.OK);
+                return new ResponseEntity<>(optionalCustomer.get(), HttpStatus.OK);
             }
             else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -94,7 +94,7 @@ public class CustomerController {
 
     //     update
     @PutMapping("/customer/{cid}")
-    public ResponseEntity<Object> updateDept(@PathVariable int cid, @RequestBody Customer customer){
+    public ResponseEntity<Object> updateCustomer(@PathVariable int cid, @RequestBody Customer customer){
         try{
             Customer customer1 = customerService.save(customer);
             return new ResponseEntity<>(customer1, HttpStatus.OK);
@@ -106,7 +106,7 @@ public class CustomerController {
 
 
     @DeleteMapping("/customer/deletion/{cid}")
-    public ResponseEntity<Object> removeDeptId(@PathVariable int cid){
+    public ResponseEntity<Object> removeCustomerId(@PathVariable int cid){
         try{
             boolean bSuccess = customerService.removeById(cid);
             if ( bSuccess){

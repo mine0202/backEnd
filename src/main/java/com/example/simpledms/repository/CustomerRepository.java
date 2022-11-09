@@ -2,7 +2,6 @@ package com.example.simpledms.repository;
 
 
 import com.example.simpledms.model.Customer;
-import com.example.simpledms.model.Faq;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

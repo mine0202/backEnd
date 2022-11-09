@@ -39,14 +39,6 @@ public class DeptService {
     public Optional findById(int dno){
         Optional<Dept> optionalDept = deptRepository.findById(dno);
 
-//        데이터 가공
-        Dept dept = optionalDept.get();
-
-        dept.setDname(dept.getDname() +"_해킹");
-
-//        가공데이터를 다시 옵셔널에 넣기
-        optionalDept = Optional.ofNullable(dept);
-
         return optionalDept;
     }
 

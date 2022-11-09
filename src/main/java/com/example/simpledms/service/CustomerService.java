@@ -1,9 +1,7 @@
 package com.example.simpledms.service;
 
 import com.example.simpledms.model.Customer;
-import com.example.simpledms.model.Faq;
 import com.example.simpledms.repository.CustomerRepository;
-import com.example.simpledms.repository.FaqRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
