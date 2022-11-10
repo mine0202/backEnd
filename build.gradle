@@ -37,7 +37,7 @@ dependencies {
 //    jpa 라이브러리
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//    modelmapper 라이브러리
+//    modelmapper 라이브러리 ( model to dto 자동변환, dto to model 자동변환 )
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
 //querydsl 추가
 	implementation "com.querydsl:querydsl-jpa:5.0.0"

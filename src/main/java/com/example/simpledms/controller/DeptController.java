@@ -44,8 +44,6 @@ public ResponseEntity<Object> getDeptAll(@RequestParam(required = false) String 
 
         //                페이징 처리되는 findAllByDnameContaining()
 
-
-
 //            맵 자료구조에 넣어서 전송
         Map<String, Object> response = new HashMap<>();
         response.put("dept", deptPage.getContent());
